@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 
-const ALBUM_PASSWORD = "ailealbumu2024"; // Bu şifreyi istediğiniz gibi değiştirebilirsiniz
+const ALBUM_PASSWORD = "enes21"; // Bu şifreyi istediğiniz gibi değiştirebilirsiniz
 
 const PasswordPage: React.FC = () => {
   const [password, setPassword] = useState('');
