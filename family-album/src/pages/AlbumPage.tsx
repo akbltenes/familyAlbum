@@ -16,14 +16,19 @@ import {
   DialogContent,
   CircularProgress,
   Fab,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import {
   Add as AddIcon,
   Share as ShareIcon,
   Close as CloseIcon,
   CloudDownload as CloudDownloadIcon,
+  Delete as DeleteIcon,
 } from '@mui/icons-material';
-import api, { Photo } from '../services/api';
+import api, { Photo, ApiError } from '../services/api';
+import { format } from 'date-fns';
+import { tr } from 'date-fns/locale';
 
 const AlbumPage: React.FC = () => {
   const { id } = useParams();
@@ -31,6 +36,8 @@ const AlbumPage: React.FC = () => {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState<number | null>(null);
 
   useEffect(() => {
     loadPhotos();
@@ -38,10 +45,13 @@ const AlbumPage: React.FC = () => {
 
   const loadPhotos = async () => {
     try {
+      setLoading(true);
       const fetchedPhotos = await api.getAllPhotos();
       setPhotos(fetchedPhotos);
-    } catch (error) {
-      console.error('Error loading photos:', error);
+      setError(null);
+    } catch (err) {
+      const apiError = err as ApiError;
+      setError(apiError.message);
     } finally {
       setLoading(false);
     }
@@ -58,6 +68,31 @@ const AlbumPage: React.FC = () => {
         url: window.location.href
       });
     }
+  };
+
+  const handlePhotoClick = (photo: Photo) => {
+    setSelectedPhoto(photo);
+  };
+
+  const handleCloseDialog = () => {
+    setSelectedPhoto(null);
+  };
+
+  const handleDeletePhoto = async (id: number) => {
+    try {
+      setDeleteLoading(id);
+      await api.deletePhoto(id);
+      setPhotos(photos.filter(photo => photo.id !== id));
+    } catch (err) {
+      const apiError = err as ApiError;
+      setError(apiError.message);
+    } finally {
+      setDeleteLoading(null);
+    }
+  };
+
+  const handleCloseError = () => {
+    setError(null);
   };
 
   if (loading) {
@@ -145,71 +180,81 @@ const AlbumPage: React.FC = () => {
           </Box>
 
           <Grid container spacing={3}>
-            {photos.map((photo, index) => (
+            {photos.map((photo) => (
               <Grid item xs={12} sm={6} md={4} key={photo.id}>
-                <Fade in={true} style={{ transitionDelay: `${index * 100}ms` }}>
-                  <Card
+                <Fade in={true} style={{ transitionDelay: `${photo.id * 100}ms` }}>
+                  <Box
                     sx={{
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      borderRadius: 3,
-                      overflow: 'hidden',
-                      bgcolor: 'rgba(255,255,255,0.95)',
-                      backdropFilter: 'blur(10px)',
-                      boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-                      transition: 'all 0.3s ease',
+                      position: 'relative',
+                      paddingTop: '100%',
+                      cursor: 'pointer',
                       '&:hover': {
-                        transform: 'translateY(-8px)',
-                        boxShadow: '0 12px 40px rgba(0,0,0,0.2)',
-                      }
+                        '& .deleteButton': {
+                          opacity: 1,
+                        },
+                      },
                     }}
                   >
-                    <CardMedia
+                    <Box
                       component="img"
-                      height="300"
-                      image={api.getPhotoUrl(photo.fileName)}
-                      alt="Aile fotoğrafı"
+                      src={api.getPhotoUrl(photo.fileName)}
+                      alt={`Uploaded by ${photo.uploadedBy}`}
+                      onClick={() => handlePhotoClick(photo)}
                       sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
                         objectFit: 'cover',
-                        cursor: 'pointer',
+                        borderRadius: 1,
                       }}
-                      onClick={() => setSelectedPhoto(photo)}
                     />
-                    <CardContent>
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          color: '#666',
-                          fontWeight: 500,
-                          mb: 1
-                        }}
-                      >
-                        Yükleyen: {photo.uploadedBy}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{ color: '#888' }}
-                      >
-                        Tarih: {new Date(photo.uploadDate).toLocaleDateString('tr-TR')}
-                      </Typography>
-                    </CardContent>
-                    <CardActions sx={{ mt: 'auto' }}>
-                      <Button
-                        size="small"
-                        startIcon={<CloudDownloadIcon />}
-                        sx={{
-                          color: '#764ba2',
-                          '&:hover': {
-                            bgcolor: 'rgba(118,75,162,0.1)',
-                          }
-                        }}
-                        onClick={() => window.open(api.getPhotoUrl(photo.fileName), '_blank')}
-                      >
-                        İndir
-                      </Button>
-                    </CardActions>
-                  </Card>
+                    <IconButton
+                      className="deleteButton"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeletePhoto(photo.id);
+                      }}
+                      sx={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        opacity: 0,
+                        transition: 'opacity 0.2s',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        color: 'white',
+                        '&:hover': {
+                          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        },
+                      }}
+                      disabled={deleteLoading === photo.id}
+                    >
+                      {deleteLoading === photo.id ? (
+                        <CircularProgress size={24} color="inherit" />
+                      ) : (
+                        <DeleteIcon />
+                      )}
+                    </IconButton>
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        color: 'white',
+                        padding: 1,
+                        borderBottomLeftRadius: 1,
+                        borderBottomRightRadius: 1,
+                      }}
+                    >
+                      <Box sx={{ fontSize: '0.875rem' }}>{photo.uploadedBy}</Box>
+                      <Box sx={{ fontSize: '0.75rem', opacity: 0.8 }}>
+                        {format(new Date(photo.uploadDate), 'dd MMMM yyyy HH:mm', { locale: tr })}
+                      </Box>
+                    </Box>
+                  </Box>
                 </Fade>
               </Grid>
             ))}
@@ -236,40 +281,52 @@ const AlbumPage: React.FC = () => {
 
       <Dialog
         open={!!selectedPhoto}
-        onClose={() => setSelectedPhoto(null)}
+        onClose={handleCloseDialog}
         maxWidth="lg"
-        fullWidth
+        PaperProps={{
+          sx: {
+            position: 'relative',
+            backgroundColor: 'transparent',
+            boxShadow: 'none',
+          },
+        }}
       >
         {selectedPhoto && (
-          <Box sx={{ position: 'relative' }}>
+          <>
             <IconButton
+              onClick={handleCloseDialog}
               sx={{
                 position: 'absolute',
                 right: 8,
                 top: 8,
                 color: 'white',
-                bgcolor: 'rgba(0,0,0,0.4)',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
                 '&:hover': {
-                  bgcolor: 'rgba(0,0,0,0.6)',
-                }
+                  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                },
               }}
-              onClick={() => setSelectedPhoto(null)}
             >
               <CloseIcon />
             </IconButton>
-            <img
+            <Box
+              component="img"
               src={api.getPhotoUrl(selectedPhoto.fileName)}
-              alt={selectedPhoto.fileName}
-              style={{
-                width: '100%',
-                height: 'auto',
+              alt={`Uploaded by ${selectedPhoto.uploadedBy}`}
+              sx={{
                 maxHeight: '90vh',
-                objectFit: 'contain'
+                maxWidth: '90vw',
+                objectFit: 'contain',
               }}
             />
-          </Box>
+          </>
         )}
       </Dialog>
+
+      <Snackbar open={!!error} autoHideDuration={6000} onClose={handleCloseError}>
+        <Alert onClose={handleCloseError} severity="error" sx={{ width: '100%' }}>
+          {error}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
