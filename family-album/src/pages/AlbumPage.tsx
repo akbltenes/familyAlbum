@@ -251,7 +251,7 @@ const AlbumPage: React.FC = () => {
                     >
                       <Box sx={{ fontSize: '0.875rem' }}>{photo.uploadedBy}</Box>
                       <Box sx={{ fontSize: '0.75rem', opacity: 0.8 }}>
-                        {format(new Date(photo.uploadDate), 'dd MMMM yyyy HH:mm', { locale: tr })}
+                        {format(new Date(photo.uploadDate), 'dd.MM.yyyy HH:mm')}
                       </Box>
                     </Box>
                   </Box>
