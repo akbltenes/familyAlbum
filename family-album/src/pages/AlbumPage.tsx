@@ -265,46 +265,35 @@ const AlbumPage: React.FC = () => {
       </Container>
 
       {/* EA Kutucuğu */}
-      <Tooltip 
-        title={
-          <Typography style={{ fontSize: '14px', padding: '8px' }}>
-            Enes AKBULUT'tan ailesine ufak bir sanal albüm hediyesi.
-          </Typography>
-        }
-        arrow
-        placement="top"
-        open={selectedPhoto === null}
+      <Paper
+        sx={{
+          position: 'fixed',
+          left: 20,
+          bottom: 20,
+          width: 60,
+          height: 60,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          background: '#000000',
+          color: '#ffffff',
+          fontSize: '1.2rem',
+          fontWeight: 'bold',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+          zIndex: 1000,
+          '&:hover': {
+            boxShadow: '0 6px 16px rgba(0,0,0,0.3)',
+          }
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          setError("Enes AKBULUT'tan ailesine ufak bir sanal albüm hediyesi.");
+        }}
       >
-        <Paper
-          sx={{
-            position: 'fixed',
-            left: 20,
-            bottom: 20,
-            width: 60,
-            height: 60,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            background: '#000000',
-            color: '#ffffff',
-            fontSize: '1.2rem',
-            fontWeight: 'bold',
-            borderRadius: '12px',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-            zIndex: 1000,
-            '&:hover': {
-              boxShadow: '0 6px 16px rgba(0,0,0,0.3)',
-            }
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            setError("Enes AKBULUT'tan ailesine ufak bir sanal albüm hediyesi.");
-          }}
-        >
-          EA
-        </Paper>
-      </Tooltip>
+        EA
+      </Paper>
 
       <Dialog
         open={!!selectedPhoto}
@@ -351,7 +340,7 @@ const AlbumPage: React.FC = () => {
 
       <Snackbar 
         open={!!error} 
-        autoHideDuration={6000} 
+        autoHideDuration={3000} 
         onClose={handleCloseError}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
@@ -362,6 +351,9 @@ const AlbumPage: React.FC = () => {
             width: '100%',
             backgroundColor: error?.includes("AKBULUT") ? '#000000' : undefined,
             color: error?.includes("AKBULUT") ? '#ffffff' : undefined,
+            '& .MuiAlert-action': {
+              display: error?.includes("AKBULUT") ? 'none' : 'flex'
+            }
           }}
         >
           {error}
