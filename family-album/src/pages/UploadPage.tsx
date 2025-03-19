@@ -58,7 +58,7 @@ const UploadPage: React.FC = () => {
       }
       setTimeout(() => {
         navigate(`/album/${id}`);
-      }, 1000);
+      }, 500);
     } catch (err) {
       const apiError = err as ApiError;
       setError(apiError.message);
@@ -164,7 +164,7 @@ const UploadPage: React.FC = () => {
 
       <Snackbar
         open={success}
-        autoHideDuration={1000}
+        autoHideDuration={500}
         onClose={handleCloseSuccess}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
