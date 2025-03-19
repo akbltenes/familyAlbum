@@ -46,6 +46,9 @@ public class PhotoController {
             byte[] photoBytes = photoService.getPhotoFile(filename);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_JPEG);
+            headers.add("Access-Control-Allow-Origin", "https://family-album-pink.vercel.app");
+            headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            headers.add("Access-Control-Allow-Headers", "*");
             return new ResponseEntity<>(photoBytes, headers, HttpStatus.OK);
         } catch (IOException e) {
             return ResponseEntity.notFound().build();
