@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 // API URL'lerini ortam değişkenlerinden al
-const BASE_URL = process.env.REACT_APP_API_URL || 'https://familyalbum-9.onrender.com/api';
+const BASE_URL = 'https://familyalbum-9.onrender.com/api';
 
 // Axios instance oluştur
 const apiClient = axios.create({
@@ -68,6 +68,7 @@ const api = {
       });
       return response.data;
     } catch (error) {
+      console.error('Upload Error:', error);
       return handleError(error);
     }
   },
@@ -80,6 +81,7 @@ const api = {
     try {
       await apiClient.delete(`/photos/${id}`);
     } catch (error) {
+      console.error('Delete Error:', error);
       return handleError(error);
     }
   },
