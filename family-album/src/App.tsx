@@ -23,7 +23,7 @@ const theme = createTheme({
 
 // Şifre kontrolü için özel component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const isAuthenticated = localStorage.getItem('albumPassword') === 'enes2121';
+  const isAuthenticated = localStorage.getItem('albumPassword') === '3011';
   
   if (!isAuthenticated) {
     return <Navigate to="/password/ailealbumu" replace />;
