@@ -26,7 +26,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = localStorage.getItem('albumPassword') === 'ailealbumu2024';
   
   if (!isAuthenticated) {
-    return <Navigate to="/password/ailealbumu" />;
+    return <Navigate to="/password/ailealbumu" replace />;
   }
 
   return <>{children}</>;

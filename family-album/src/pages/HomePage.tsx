@@ -31,17 +31,6 @@ const HomePage: React.FC = () => {
             background: 'rgba(255, 255, 255, 0.95)',
             backdropFilter: 'blur(10px)',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-            animation: 'fadeIn 0.5s ease-out',
-            '@keyframes fadeIn': {
-              from: {
-                opacity: 0,
-                transform: 'translateY(20px)'
-              },
-              to: {
-                opacity: 1,
-                transform: 'translateY(0)'
-              }
-            }
           }}
         >
           <Typography

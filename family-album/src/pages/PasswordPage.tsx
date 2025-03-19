@@ -97,6 +97,7 @@ const PasswordPage: React.FC = () => {
               error={error}
               helperText={error ? "Yanlış şifre" : ""}
               sx={{ mb: 3 }}
+              autoFocus
             />
 
             <Button
