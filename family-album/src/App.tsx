@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -7,6 +7,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import HomePage from './pages/HomePage';
 import AlbumPage from './pages/AlbumPage';
 import UploadPage from './pages/UploadPage';
+import PasswordPage from './pages/PasswordPage';
 
 const theme = createTheme({
   palette: {
@@ -20,6 +21,17 @@ const theme = createTheme({
   },
 });
 
+// Şifre kontrolü için özel component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const isAuthenticated = localStorage.getItem('albumPassword') === 'ailealbumu2024';
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/password/ailealbumu" />;
+  }
+
+  return <>{children}</>;
+};
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -27,8 +39,23 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/album/:id" element={<AlbumPage />} />
-          <Route path="/upload/:id" element={<UploadPage />} />
+          <Route path="/password/:id" element={<PasswordPage />} />
+          <Route 
+            path="/album/:id" 
+            element={
+              <ProtectedRoute>
+                <AlbumPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/upload/:id" 
+            element={
+              <ProtectedRoute>
+                <UploadPage />
+              </ProtectedRoute>
+            } 
+          />
         </Routes>
       </Router>
     </ThemeProvider>
