@@ -15,11 +15,17 @@ services:
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: family_album_db
-          property: user
+          property: username
       - key: SPRING_DATASOURCE_PASSWORD
         fromDatabase:
           name: family_album_db
           property: password
+      - key: JAVA_TOOL_OPTIONS
+        value: "-Xmx512m"
+      - key: PORT
+        value: 8080
+    healthCheckPath: /actuator/health
+    autoDeploy: false
 
 databases:
   - name: family_album_db
