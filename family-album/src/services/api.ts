@@ -9,17 +9,14 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true,
+  withCredentials: false // CORS için false yapıyoruz
 });
 
 // Response interceptor ekle
 apiClient.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    if (error.response?.status === 401) {
-      // Unauthorized durumunda yapılacak işlemler
-      console.error('Unauthorized access');
-    }
+    console.error('API Error:', error.response || error.message);
     return Promise.reject(error);
   }
 );
@@ -38,6 +35,7 @@ export interface ApiError {
 }
 
 const handleError = (error: any): never => {
+  console.error('API Error Details:', error);
   const apiError: ApiError = {
     message: error.response?.data?.message || 'Bir hata oluştu',
     status: error.response?.status || 500,
@@ -49,8 +47,10 @@ const api = {
   getAllPhotos: async (): Promise<Photo[]> => {
     try {
       const response = await apiClient.get('/photos');
+      console.log('Photos response:', response.data);
       return response.data;
     } catch (error) {
+      console.error('Get Photos Error:', error);
       return handleError(error);
     }
   },
