@@ -58,7 +58,7 @@ const UploadPage: React.FC = () => {
       }
       setTimeout(() => {
         navigate(`/album/${id}`);
-      }, 2000);
+      }, 1000);
     } catch (err) {
       const apiError = err as ApiError;
       setError(apiError.message);
@@ -164,15 +164,24 @@ const UploadPage: React.FC = () => {
 
       <Snackbar
         open={success}
-        autoHideDuration={6000}
+        autoHideDuration={1000}
         onClose={handleCloseSuccess}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert
           onClose={handleCloseSuccess}
           severity="success"
-          sx={{ width: '100%' }}
+          variant="filled"
+          sx={{ 
+            width: '100%',
+            fontSize: '1.1rem',
+            backgroundColor: '#4caf50',
+            '& .MuiAlert-icon': {
+              fontSize: '2rem'
+            }
+          }}
         >
-          Fotoğraf başarıyla yüklendi!
+          Fotoğraf başarıyla yüklendi! Albüme yönlendiriliyorsunuz...
         </Alert>
       </Snackbar>
     </Box>
