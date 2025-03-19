@@ -7,11 +7,10 @@ import {
   Button,
   Typography,
   Paper,
-  Alert,
 } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 
-const ALBUM_PASSWORD = "enes2121"; // Bu şifreyi istediğiniz gibi değiştirebilirsiniz
+const ALBUM_PASSWORD = "enes2121";
 
 const PasswordPage: React.FC = () => {
   const [password, setPassword] = useState('');
@@ -21,10 +20,11 @@ const PasswordPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Girilen şifre:', password);
+    console.log('Beklenen şifre:', ALBUM_PASSWORD);
+    
     if (password === ALBUM_PASSWORD) {
-      // Şifreyi localStorage'a kaydet
-      localStorage.setItem('albumPassword', password);
-      // Albüm sayfasına yönlendir
+      localStorage.setItem('albumPassword', ALBUM_PASSWORD);
       navigate(`/album/${id}`);
     } else {
       setError(true);
