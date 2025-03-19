@@ -11,7 +11,7 @@ export interface Photo {
   uploadDate: string;
 }
 
-export const api = {
+const api = {
   getAllPhotos: async (): Promise<Photo[]> => {
     const response = await axios.get(`${BASE_URL}/photos`);
     return response.data;
@@ -33,4 +33,6 @@ export const api = {
   getPhotoUrl: (fileName: string): string => {
     return `${BASE_URL}/photos/file/${fileName}`;
   },
-}; 
+};
+
+export default api; 
