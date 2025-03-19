@@ -4,7 +4,7 @@ import { QRCodeSVG } from 'qrcode.react';
 
 const HomePage: React.FC = () => {
   const albumId = 'ailealbumu';
-  const baseUrl = 'http://172.20.10.2:3000'; // Update this with your IP address
+  const baseUrl = process.env.REACT_APP_FRONTEND_URL || window.location.origin; // Önce env variable'ı kontrol et, yoksa origin'i kullan
 
   return (
     <Box
