@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 
-const ALBUM_PASSWORD = "3011";
+const ALBUM_PASSWORD = "2101";
 
 const PasswordPage: React.FC = () => {
   const [password, setPassword] = useState('');
