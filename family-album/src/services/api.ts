@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 // API URL'lerini ortam değişkenlerinden al
-const BASE_URL = process.env.REACT_APP_API_URL || 'https://familyalbum-9.onrender.com';
+const BASE_URL = process.env.REACT_APP_API_URL || 'https://familyalbum-9.onrender.com/api';
 
 // Axios instance oluştur
 const apiClient = axios.create({
@@ -9,7 +9,7 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: false // CORS için false yapıyoruz
+  withCredentials: true
 });
 
 // Response interceptor ekle
