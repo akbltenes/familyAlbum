@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
+// Render'daki backend URL'i
+const BASE_URL = 'https://family-album-backend.onrender.com/api';
 
 export interface Photo {
   id: number;
@@ -10,9 +11,9 @@ export interface Photo {
   uploadDate: string;
 }
 
-const api = {
+export const api = {
   getAllPhotos: async (): Promise<Photo[]> => {
-    const response = await axios.get(`${API_BASE_URL}/photos`);
+    const response = await axios.get(`${BASE_URL}/photos`);
     return response.data;
   },
 
@@ -21,7 +22,7 @@ const api = {
     formData.append('file', file);
     formData.append('uploadedBy', uploadedBy);
 
-    const response = await axios.post(`${API_BASE_URL}/photos`, formData, {
+    const response = await axios.post(`${BASE_URL}/photos/upload`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -30,8 +31,6 @@ const api = {
   },
 
   getPhotoUrl: (fileName: string): string => {
-    return `${API_BASE_URL}/photos/file/${fileName}`;
+    return `${BASE_URL}/photos/file/${fileName}`;
   },
-};
-
-export default api; 
+}; 
