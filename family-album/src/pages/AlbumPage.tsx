@@ -18,6 +18,8 @@ import {
   Fab,
   Snackbar,
   Alert,
+  Paper,
+  Tooltip,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -251,7 +253,7 @@ const AlbumPage: React.FC = () => {
                     >
                       <Box sx={{ fontSize: '0.875rem' }}>{photo.uploadedBy}</Box>
                       <Box sx={{ fontSize: '0.75rem', opacity: 0.8 }}>
-                        {format(new Date(photo.uploadDate), 'dd.MM.yyyy HH:mm')}
+                        {format(new Date(photo.uploadDate), 'dd.MM.yyyy HH:mm', { locale: tr })}
                       </Box>
                     </Box>
                   </Box>
@@ -262,22 +264,43 @@ const AlbumPage: React.FC = () => {
         </Box>
       </Container>
 
-      <Fab
-        color="primary"
-        aria-label="add"
-        sx={{
-          position: 'fixed',
-          bottom: 32,
-          right: 32,
-          background: 'linear-gradient(45deg, #667eea, #764ba2)',
-          '&:hover': {
-            background: 'linear-gradient(45deg, #764ba2, #667eea)',
-          }
-        }}
-        onClick={handleAddPhoto}
+      {/* EA Kutucuğu */}
+      <Tooltip 
+        title={
+          <Typography style={{ fontSize: '14px', padding: '8px' }}>
+            Enes AKBULUT'tan ailesine ufak bir sanal albüm hediyesi.
+          </Typography>
+        }
+        arrow
+        placement="top"
       >
-        <AddIcon />
-      </Fab>
+        <Paper
+          sx={{
+            position: 'fixed',
+            left: 20,
+            bottom: 20,
+            width: 40,
+            height: 40,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: 'white',
+            fontWeight: 'bold',
+            borderRadius: '8px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+            zIndex: 1000,
+            '&:hover': {
+              transform: 'scale(1.05)',
+              transition: 'transform 0.2s',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+            }
+          }}
+        >
+          EA
+        </Paper>
+      </Tooltip>
 
       <Dialog
         open={!!selectedPhoto}
