@@ -273,29 +273,33 @@ const AlbumPage: React.FC = () => {
         }
         arrow
         placement="top"
+        open={selectedPhoto === null}
       >
         <Paper
           sx={{
             position: 'fixed',
             left: 20,
             bottom: 20,
-            width: 40,
-            height: 40,
+            width: 60,
+            height: 60,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: 'white',
+            background: '#000000',
+            color: '#ffffff',
+            fontSize: '1.2rem',
             fontWeight: 'bold',
-            borderRadius: '8px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+            borderRadius: '12px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
             zIndex: 1000,
             '&:hover': {
-              transform: 'scale(1.05)',
-              transition: 'transform 0.2s',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+              boxShadow: '0 6px 16px rgba(0,0,0,0.3)',
             }
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            setError("Enes AKBULUT'tan ailesine ufak bir sanal albüm hediyesi.");
           }}
         >
           EA
@@ -345,8 +349,21 @@ const AlbumPage: React.FC = () => {
         )}
       </Dialog>
 
-      <Snackbar open={!!error} autoHideDuration={6000} onClose={handleCloseError}>
-        <Alert onClose={handleCloseError} severity="error" sx={{ width: '100%' }}>
+      <Snackbar 
+        open={!!error} 
+        autoHideDuration={6000} 
+        onClose={handleCloseError}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      >
+        <Alert 
+          onClose={handleCloseError} 
+          severity={error?.includes("AKBULUT") ? "info" : "error"} 
+          sx={{ 
+            width: '100%',
+            backgroundColor: error?.includes("AKBULUT") ? '#000000' : undefined,
+            color: error?.includes("AKBULUT") ? '#ffffff' : undefined,
+          }}
+        >
           {error}
         </Alert>
       </Snackbar>
