@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -15,6 +16,8 @@ import api, { ApiError } from '../services/api';
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 const UploadPage: React.FC = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploaderName, setUploaderName] = useState('');
   const [isUploading, setIsUploading] = useState(false);
@@ -53,6 +56,9 @@ const UploadPage: React.FC = () => {
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
+      setTimeout(() => {
+        navigate(`/album/${id}`);
+      }, 2000);
     } catch (err) {
       const apiError = err as ApiError;
       setError(apiError.message);

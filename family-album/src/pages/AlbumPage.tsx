@@ -58,7 +58,7 @@ const AlbumPage: React.FC = () => {
   };
 
   const handleAddPhoto = () => {
-    navigate('/upload/ailealbumu');
+    navigate(`/upload/${id}`);
   };
 
   const handleShare = () => {
@@ -163,7 +163,7 @@ const AlbumPage: React.FC = () => {
               <Button
                 variant="contained"
                 startIcon={<AddIcon />}
-                onClick={() => navigate(`/upload/${id}`)}
+                onClick={handleAddPhoto}
                 sx={{
                   bgcolor: 'white',
                   color: '#764ba2',
@@ -274,7 +274,7 @@ const AlbumPage: React.FC = () => {
             background: 'linear-gradient(45deg, #764ba2, #667eea)',
           }
         }}
-        onClick={() => navigate(`/upload/${id}`)}
+        onClick={handleAddPhoto}
       >
         <AddIcon />
       </Fab>
