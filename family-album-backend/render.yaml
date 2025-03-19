@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: family-album-backend
+    env: docker
+    plan: free
+    buildCommand: "./mvnw package -DskipTests"
+    startCommand: "java -jar target/*.jar"
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: family_album_db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: family_album_db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: family_album_db
+          property: password
+
+databases:
+  - name: family_album_db
+    plan: free
+    ipAllowList: []
