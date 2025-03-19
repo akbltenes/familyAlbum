@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 // API URL'lerini ortam değişkenlerinden al
-const BASE_URL = process.env.REACT_APP_API_URL || 'https://family-album-backend.onrender.com';
+const BASE_URL = process.env.REACT_APP_API_URL || 'https://familyalbum-9.onrender.com';
 
 // Axios instance oluştur
 const apiClient = axios.create({
