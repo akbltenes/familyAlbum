@@ -7,7 +7,7 @@ const HomePage: React.FC = () => {
   const baseUrl = process.env.REACT_APP_FRONTEND_URL || window.location.origin;
 
   // QR kod için URL oluştur
-  const qrCodeUrl = `${baseUrl}/upload/${albumId}`.replace('@', '');
+  const qrCodeUrl = `${baseUrl}/album/${albumId}`.replace('@', '');
 
   return (
     <Box
