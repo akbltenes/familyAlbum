@@ -47,7 +47,7 @@ public class PhotoService {
         // Create and save photo entity
         Photo photo = new Photo();
         photo.setFileName(newFilename);
-        photo.setFileUrl("/api/photos/file/" + newFilename);
+        photo.setFileUrl("/photos/file/" + newFilename);
         photo.setUploadedBy(uploadedBy);
 
         return photoRepository.save(photo);
@@ -56,5 +56,18 @@ public class PhotoService {
     public byte[] getPhotoFile(String filename) throws IOException {
         Path filePath = Paths.get(uploadDir).resolve(filename);
         return Files.readAllBytes(filePath);
+    }
+
+    public void deletePhoto(Long id) throws IOException {
+        // Önce veritabanından fotoğraf bilgilerini al
+        Photo photo = photoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Fotoğraf bulunamadı"));
+
+        // Dosyayı diskten sil
+        Path filePath = Paths.get(uploadDir).resolve(photo.getFileName());
+        Files.deleteIfExists(filePath);
+
+        // Veritabanından kaydı sil
+        photoRepository.deleteById(id);
     }
 }
