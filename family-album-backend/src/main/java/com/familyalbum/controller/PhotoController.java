@@ -12,7 +12,8 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/photos")
+@CrossOrigin(origins = "https://family-album-pink.vercel.app", allowCredentials = "false")
+@RequestMapping("/photos")
 public class PhotoController {
 
     private final PhotoService photoService;
@@ -27,7 +28,7 @@ public class PhotoController {
         return ResponseEntity.ok(photos);
     }
 
-    @PostMapping
+    @PostMapping("/upload")
     public ResponseEntity<Photo> uploadPhoto(
             @RequestParam("file") MultipartFile file,
             @RequestParam("uploadedBy") String uploadedBy) {
