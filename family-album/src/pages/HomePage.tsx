@@ -4,7 +4,10 @@ import { QRCodeSVG } from 'qrcode.react';
 
 const HomePage: React.FC = () => {
   const albumId = 'ailealbumu';
-  const baseUrl = process.env.REACT_APP_FRONTEND_URL || window.location.origin; // Önce env variable'ı kontrol et, yoksa origin'i kullan
+  const baseUrl = process.env.REACT_APP_FRONTEND_URL || window.location.origin;
+
+  // QR kod için URL oluştur
+  const qrCodeUrl = `${baseUrl}/upload/${albumId}`.replace('@', '');
 
   return (
     <Box
@@ -122,7 +125,7 @@ const HomePage: React.FC = () => {
               }}
             >
               <QRCodeSVG
-                value={`${baseUrl}/album/${albumId}`}
+                value={qrCodeUrl}
                 size={250}
                 level="H"
                 includeMargin={true}
