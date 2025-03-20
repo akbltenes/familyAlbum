@@ -264,7 +264,7 @@ const AlbumPage: React.FC = () => {
         </Box>
       </Container>
 
-      {/* EA Kutucuğu */}
+      {/* EA İmza Kutusu */}
       <Paper
         sx={{
           position: 'fixed',

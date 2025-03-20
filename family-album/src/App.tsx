@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ThemeProvider, createTheme } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 
-// Pages
+// Sayfalar
 import HomePage from './pages/HomePage';
 import AlbumPage from './pages/AlbumPage';
 import UploadPage from './pages/UploadPage';
@@ -21,7 +21,7 @@ const theme = createTheme({
   },
 });
 
-// Şifre kontrolü için özel component
+// Şifre korumalı sayfalara erişim için özel bileşen
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = localStorage.getItem('albumPassword') === '2101';
   
